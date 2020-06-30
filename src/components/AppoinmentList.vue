@@ -3,17 +3,26 @@
 <table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Id</th>
+
       <th scope="col">Action</th>
-      <th scope="col">Pet Name</th>
+      
+      <th scope="col" >Pet Name</th>
       <th scope="col">Pet Owner</th>
       <th scope="col">Date</th>
       <th scope="col">Notes</th>
     </tr>
   </thead>
   <tbody>
-    <tr v-for="(item,index) in appoinments" v-bind:key="item.aptIndex">
-      <th scope="row">{{index}}</th>
+    <!-- why we need another index if we can just
+    add in the loop ? because the index inside the loop
+    got refreshed every time you delete something
+    its not permamnent . to locate anything with a id
+    we need persistant id that is genrarated in when the 
+    data is loaded
+      -->
+
+    <tr v-for="item in appoinments" v-bind:key="item.aptIndex">
+      
       <td>
           <!-- data is coming from the parent  componet
             so insted of invoking a method in here
@@ -27,10 +36,24 @@
 
           </button>
       </td>
-      <td>{{item.petName}}</td>
-      <td>{{item.petOwner}}</td>
+        <!-- blur event happend when people try to edit a field 
+         and the 
+         $emit('eventName',payload1,payload2,payload3,.......)
+         we send the event name 'edit'
+         payload 1 = id
+         payload 2 = the fieldName that we want to change
+         payload 3 = th updated value
+        
+         you can emit as many as you can depending 
+        on your need
+         -->
+     
+
+
+      <td contenteditable="contenteditable" @blur="$emit('edit',item.aptId,'petName',$event.target.innerText)">{{item.petName}}</td>
+      <td contenteditable="contenteditable" @blur="$emit('edit',item.aptId,'petOwner',$event.target.innerText)">{{item.petOwner}}</td>
       <td>{{ formattedDate(item.aptDate)}}</td>
-      <td>{{item.aptNotes}}</td>
+      <td contenteditable="contenteditable" @blur="$emit('edit',item.aptId,'aptNotes',$event.target.innerText)">{{item.aptNotes}}</td>
     </tr>    
   </tbody>
 </table>

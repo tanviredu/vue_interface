@@ -7,9 +7,12 @@
         to other -->
 
         <!-- now we take catch the event here and tell them to execute a function 
-        here whenit catch the event
+        here when it catch the event
+        
+        this is the bridge of the component
+        you send it here and the event that the component emit you recieve it here
          -->
-      <appoinment-list :appoinments="appoinments" @remove="removeItem" ></appoinment-list>
+      <appoinment-list :appoinments="appoinments" @remove="removeItem" @edit="editItem" ></appoinment-list>
       </div>
       <hr>
 
@@ -63,7 +66,7 @@ export default {
             this.aptIndex++;
             return item;
             // adding a index then return callback 
-            
+
 
           })
 
@@ -75,6 +78,22 @@ export default {
         // from the array with the 
         // without function
         this.appoinments = _.without(this.appoinments,apt);
+
+    },
+    // it willt ake the three payload 
+    // as a function parameter
+    editItem: function(id,field,text){
+      // check the index inthe appointments
+      // with the loadash 
+      // and it wil automaticaly if found assigned it to id
+
+      const aptIndex = _.findIndex(this.appoinments,{
+        aptId : id
+      });
+      // now find the appointments of the index and then the filed
+      // then assign to the new Value
+      this.appoinments[aptIndex][field] = text;
+
 
     }
   }
