@@ -12,8 +12,8 @@
     </tr>
   </thead>
   <tbody>
-    <tr v-for="(item,index) in appoinments" v-bind:key="index">
-      <th scope="row">{{index+1}}</th>
+    <tr v-for="(item,index) in appoinments" v-bind:key="item.aptIndex">
+      <th scope="row">{{index}}</th>
       <td>
           <!-- data is coming from the parent  componet
             so insted of invoking a method in here

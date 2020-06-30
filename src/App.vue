@@ -43,6 +43,7 @@ export default {
     return {
     title: "Welcome to the Appoinment App",
     appoinments: [],
+    aptIndex: 0,
           }
   },
   components : {
@@ -54,7 +55,17 @@ export default {
   mounted(){
       axios.get("https://raw.githubusercontent.com/tanviredu/vue-interface/master/public/data/appointments.json")
       .then((res)=>{
-          this.appoinments = res.data
+          // adding and index in every data
+          // with the map function
+          // map ebewy data with index
+          this.appoinments = res.data.map((item)=>{
+            item.aptId = this.aptIndex;
+            this.aptIndex++;
+            return item;
+            // adding a index then return callback 
+            
+
+          })
 
       })
   },
