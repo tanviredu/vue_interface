@@ -1,5 +1,6 @@
 <template>
 <!-- <div class="list-group-item " >       -->
+<div class="col-12">
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -57,7 +58,7 @@
     </tr>    
   </tbody>
 </table>
-
+</div>
 </template>
 
 

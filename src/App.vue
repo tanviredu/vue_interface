@@ -12,6 +12,7 @@
         this is the bridge of the component
         you send it here and the event that the component emit you recieve it here
          -->
+      <add-appoinment></add-appoinment>
       <appoinment-list :appoinments="appoinments" @remove="removeItem" @edit="editItem" ></appoinment-list>
       </div>
       <hr>
@@ -35,6 +36,7 @@ import axios from "axios"
 // import the appoinments list
 // dont use the curly bracs we will import everything
 import AppoinmentList  from "./components/AppoinmentList";
+import AddAppoinment from "./components/AddAppoinment"
 
 // import lodash to use array remove or add element
 import _ from "lodash";
@@ -51,7 +53,8 @@ export default {
   },
   components : {
     // register the components here
-    AppoinmentList
+    AppoinmentList,
+    AddAppoinment
   },
   // anything you put inside mounted will be loaded
   // at the starting of the program
