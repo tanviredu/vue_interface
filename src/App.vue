@@ -1,16 +1,18 @@
 <template>
   <div id="main-app">
-    <div class="container">
-      <h1 class="display-4">Appoinment List </h1>
-      <font-awesome-icon icon="plus" class="mr-2"></font-awesome-icon>
-      Add Appoinment
-      <hr>
-      <div v-for="(item,index) in appoinments" v-bind:key="index">      
-          <h4> {{item.petName}}</h4>
-          <p> {{item.aptNotes}}</p>
+    <div class="container container-fluid">
+      <div class="row">
+      <!--  :<the components props name>="<local valriable name>"  -->
+        <!-- aftet that data will be flow through onec components
+        to other -->
 
-        
+        <!-- now we take catch the event here and tell them to execute a function 
+        here whenit catch the event
+         -->
+      <appoinment-list :appoinments="appoinments" @remove="removeItem" ></appoinment-list>
       </div>
+      <hr>
+
     </div>
   </div>
 </template>
@@ -22,11 +24,18 @@
 // this will import athe icon that you import in the
 // main.js as a component so you can use in the vue as a component
 
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+
 
 // import the data from api or from some folder
 // with the get request
 import axios from "axios"
+// import the appoinments list
+// dont use the curly bracs we will import everything
+import AppoinmentList  from "./components/AppoinmentList";
+
+// import lodash to use array remove or add element
+import _ from "lodash";
+
 
 export default {
   name: 'MainApp',
@@ -38,7 +47,7 @@ export default {
   },
   components : {
     // register the components here
-    FontAwesomeIcon
+    AppoinmentList
   },
   // anything you put inside mounted will be loaded
   // at the starting of the program
@@ -48,6 +57,15 @@ export default {
           this.appoinments = res.data
 
       })
+  },
+  methods : {
+    removeItem : function(apt){
+        // now we remove this element
+        // from the array with the 
+        // without function
+        this.appoinments = _.without(this.appoinments,apt);
+
+    }
   }
 
   
