@@ -1,6 +1,7 @@
 <template>
   <div id="main-app">
     <div class="container container-fluid">
+      <center><h1 class="display-4"> Animal Care Appointment </h1> </center>
       <div class="row">
       <!--  :<the components props name>="<local valriable name>"  -->
         <!-- aftet that data will be flow through onec components
@@ -12,8 +13,9 @@
         this is the bridge of the component
         you send it here and the event that the component emit you recieve it here
          -->
-      <add-appoinment></add-appoinment>
-      <appoinment-list :appoinments="appoinments" @remove="removeItem" @edit="editItem" ></appoinment-list>
+      <search-appoinment @searchRecords="searchAppoinment"></search-appoinment>
+      <add-appoinment @add="addItem" ></add-appoinment>
+      <appoinment-list :appoinments="searchedApts" @remove="removeItem" @edit="editItem" ></appoinment-list>
       </div>
       <hr>
 
@@ -37,7 +39,7 @@ import axios from "axios"
 // dont use the curly bracs we will import everything
 import AppoinmentList  from "./components/AppoinmentList";
 import AddAppoinment from "./components/AddAppoinment"
-
+import SearchAppoinment from "./components/SearchAppoinment"
 // import lodash to use array remove or add element
 import _ from "lodash";
 
@@ -49,12 +51,14 @@ export default {
     title: "Welcome to the Appoinment App",
     appoinments: [],
     aptIndex: 0,
+    searchTerms: "",
           }
   },
   components : {
     // register the components here
     AppoinmentList,
-    AddAppoinment
+    AddAppoinment,
+    SearchAppoinment
   },
   // anything you put inside mounted will be loaded
   // at the starting of the program
@@ -98,7 +102,37 @@ export default {
       this.appoinments[aptIndex][field] = text;
 
 
+    },
+    addItem : function(apt){
+      // assign its index to the last index
+      apt.aptId = this.aptIndex;
+      // increase it to one becase next that is added will be the next id
+      this.aptIndex++;
+      this.appoinments.push(apt);
+    },
+    searchAppoinment:function(terms){
+      this.searchTerms = terms;
+      // this function just take the terms and assigne in to searchedTearms
+      // now we need to filter the data
+      // this will be done inthe computed section
+      // because it execute after the calculation dome
+
     }
+  },
+  computed:{
+    // this function will check the matched element between the this.searchTerms and the Total Appoinments
+    // and then insted of sending the total appoinments we only send the filtered searchedApts to the component
+    // so we no longer send the total searched terms .
+    // only the searched terms
+      searchedApts : function(){
+        return this.appoinments.filter((item)=>{
+          return (
+            item.petName.toLowerCase().match(this.searchTerms.toLowerCase()) ||
+            item.petOwner.toLowerCase().match(this.searchTerms.toLowerCase()) ||
+            item.aptNotes.toLowerCase().match(this.searchTerms.toLowerCase()) 
+          )
+        })
+      }
   }
 
   

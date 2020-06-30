@@ -9,12 +9,13 @@
 
         <!-- this will toggle the total card here -->
       <div class="card-body" :class="{'d-none': hidepanel}">
-        <form id="aptForm">
+        <form id="aptForm" @submit.prevent="requestAdd">
           <div class="form-group form-row">
             <label class="col-md-2 col-form-label text-md-right" for="petName">Pet Name</label>
             <div class="col-md-10">
               <input
                 type="text"
+                v-model="formData.petName"
                 class="form-control"
                 name="petName"
                 id="petName"
@@ -26,18 +27,18 @@
           <div class="form-group form-row">
             <label class="col-md-2 col-form-label text-md-right" for="ownerName">Pet Owner</label>
             <div class="col-md-10">
-              <input type="text" class="form-control" id="ownerName" placeholder="Owner's Name">
+              <input type="text" v-model="formData.petOwner" class="form-control" id="ownerName" placeholder="Owner's Name">
             </div>
           </div>
 
           <div class="form-group form-row">
             <label class="col-md-2 col-form-label text-md-right" for="aptDate">Date</label>
             <div class="col-md-4">
-              <input type="date" class="form-control" id="aptDate">
+              <input type="date" class="form-control" v-model="formData.aptDate"  id="aptDate">
             </div>
             <label class="col-md-2 col-form-label text-md-right" for="aptTime">Time</label>
             <div class="col-md-4">
-              <input type="time" class="form-control" name="aptTime" id="aptTime">
+              <input type="time" v-model="formData.aptTime" class="form-control" name="aptTime" id="aptTime">
             </div>
           </div>
 
@@ -50,6 +51,7 @@
                 cols="50"
                 name="aptNotes"
                 id="aptNotes"
+                v-model="formData.aptNotes"
                 placeholder="Appointment Notes"
               ></textarea>
             </div>
@@ -73,11 +75,29 @@ export default {
     name : "AddAppoinment",
     data(){
         return{
+        formData : [], //this array will be filled by all the form value
         hidepanel : true,
         }
     },
     components:{
         FontAwesomeIcon
+    },
+    methods: {
+        requestAdd : function(){
+            this.formData = {
+                petName : this.formData.petName,
+                petOwner : this.formData.petOwner,
+                aptDate : this.formData.aptDate + ' ' + this.formData.aptTime,
+                aptNotes : this.formData.aptNotes,
+            };
+
+            // now emit the add event to the main component
+            // so that it can catch the data and push to the json object
+            this.$emit("add",this.formData);
+            // now after that reset the form hide the panel
+            this.formData = [];
+            this.hidepanel = true;
+        }
     }
     
 };
